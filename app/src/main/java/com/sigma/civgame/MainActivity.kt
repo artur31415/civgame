@@ -3,6 +3,8 @@ package com.sigma.civgame
 import android.graphics.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.sigma.civgame.databinding.ActivityMainBinding
 
@@ -16,7 +18,38 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
+        //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
+
+        var aBoard = Board()
+
+        var selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
+
+        if(!selectedPiece.IsEmpty())
+        {
+            var freePositions = aBoard.GetFreePositions(selectedPiece.MovementPattern)
+            //then draw the positions!
+        }
+
+        aBoard.Draw()
+
+        binding.SVGAME.holder.addCallback(SurfaceHolder.Callback(){
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) { }
+
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                Canvas canvas = holder.lockCanvas();
+                if (canvas != null) {
+                    draw(canvas);
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
+
+        })
 
         if (binding.SVGAME.holder.surface.isValid)
         {
@@ -45,6 +78,13 @@ class MainActivity : AppCompatActivity() {
 
 
             binding.SVGAME.holder.unlockCanvasAndPost(canvas)
+
+
+
+        }
+        else
+        {
+            Log.d("DEBUG", "HERE2")
         }
 
     }

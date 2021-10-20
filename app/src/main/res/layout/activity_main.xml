@@ -14,6 +14,6 @@
         <SurfaceView
             android:id="@+id/SV_GAME"
             android:layout_width="match_parent"
-            android:layout_height="397dp" />
+            android:layout_height="645dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
