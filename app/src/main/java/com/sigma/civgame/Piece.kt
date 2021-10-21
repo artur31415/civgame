@@ -15,6 +15,8 @@ class Piece () {
 
     var MovementPattern = ArrayList<PointF> ()
 
+    var IMG = Bitmap()
+
     constructor(name: String, type: Int, color: Int) : this() {
         Name = name
         Key = " " //This should be a random string
@@ -23,9 +25,11 @@ class Piece () {
     }
 
 
-    fun Draw()
+    fun Draw(canvas: Canvas, paint: Paint)
     {
         //TODO: DRAW THE PIECE HERE!
+
+        canvas.drawBitmap(IMG, 0f, 0f, paint)
     }
 
     fun IsEmpty(): Boolean

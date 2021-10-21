@@ -12,6 +12,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+
+    var paint = Paint()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -20,9 +23,17 @@ class MainActivity : AppCompatActivity() {
 
         //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
 
+        var img = BitmapFactory.decodeResource(resources, R.drawable.hjm_crystal_game_pieces_all)
+        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
+
         var aBoard = Board()
 
         var selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
+        selectedPiece.IMG = imgPiece1
+
+        
+        paint.textSize = 50f
+        paint.color = Color.WHITE
 
         if(!selectedPiece.IsEmpty())
         {
@@ -30,50 +41,63 @@ class MainActivity : AppCompatActivity() {
             //then draw the positions!
         }
 
-        aBoard.Draw()
+
+        binding.SVGAME.setOnClickListener {
+            
+        }
+
+        
 
         binding.SVGAME.holder.addCallback(SurfaceHolder.Callback(){
 
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) { }
+            override fun surfaceDestroyed(holder: SurfaceHolder) 
+            {
 
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                Canvas canvas = holder.lockCanvas();
+            }
+
+            override fun surfaceCreated(holder: SurfaceHolder) {
+                var canvas = holder.lockCanvas();
                 if (canvas != null) {
+
+                    //TODO: Draw Stuff here
+
+                    aBoard.Draw(canvas, paint)
+
                     draw(canvas);
                     holder.unlockCanvasAndPost(canvas);
                 }
             }
 
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
+            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) 
+            {
+
+            }
 
         })
 
         if (binding.SVGAME.holder.surface.isValid)
         {
             var canvas = binding.SVGAME.holder.lockCanvas()
-            var img = BitmapFactory.decodeResource(resources, R.drawable.hjm_crystal_game_pieces_all)
-            var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
+            // var img = BitmapFactory.decodeResource(resources, R.drawable.hjm_crystal_game_pieces_all)
+            // var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
             //img = Bitmap.createScaledBitmap(img, 100, 100, false)
 
-            var paint = Paint()
-            paint.textSize = 50f
-            paint.color = Color.WHITE
+            // var paint = Paint()
+            // paint.textSize = 50f
+            // paint.color = Color.WHITE
 
 
-            for (k in 0..2)
-            {
-                var pos = PointF(0f, k * 20f)
-                canvas.drawLine(pos.x, pos.y, pos.x + 100, pos.y, paint)
+            // for (k in 0..2)
+            // {
+            //     var pos = PointF(0f, k * 20f)
+            //     canvas.drawLine(pos.x, pos.y, pos.x + 100, pos.y, paint)
 
-                canvas.drawLine(pos.y, pos.x, pos.y, pos.x + 100, paint)
-            }
+            //     canvas.drawLine(pos.y, pos.x, pos.y, pos.x + 100, paint)
+            // }
 
 
-            canvas.drawBitmap(imgPiece1, 0f, 0f, paint)
-            canvas.drawText("debug", 50f, 50f, paint)
+            // canvas.drawBitmap(imgPiece1, 0f, 0f, paint)
+            // canvas.drawText("debug", 50f, 50f, paint)
 
 
 
