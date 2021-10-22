@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
 
     var paint = Paint()
 
+    var lastTouchDown = PointF()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -43,7 +45,24 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.SVGAME.setOnClickListener {
-            
+
+        }
+
+        binding.SVGAME.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastTouchDown.x = event.getX();
+                    lastTouchDown.y = event.getY();
+
+                    //TODO: CONVERT TO GRID POS!
+                    val touchedGrid = Board.CartesianToGrid(lastTouchDown)
+                }
+                MotionEvent.ACTION_MOVE -> {
+
+                }
+                MotionEvent.ACTION_UP -> {
+                    
+                }
         }
 
         
