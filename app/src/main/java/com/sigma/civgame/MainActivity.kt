@@ -4,8 +4,11 @@ import android.graphics.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.SurfaceHolder
+import android.view.SurfaceHolder.Callback
 import android.view.SurfaceView
+import android.view.View
 import com.sigma.civgame.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -48,28 +51,33 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        binding.SVGAME.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastTouchDown.x = event.getX();
-                    lastTouchDown.y = event.getY();
 
-                    //TODO: CONVERT TO GRID POS!
-                    val touchedGrid = Board.CartesianToGrid(lastTouchDown)
+        binding.SVGAME.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                when (event?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        lastTouchDown.x = event.getX();
+                        lastTouchDown.y = event.getY();
+
+                        //TODO: CONVERT TO GRID POS!
+                        val touchedGrid = Board.CartesianToGrid(lastTouchDown)
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+
+                    }
+                    MotionEvent.ACTION_UP -> {
+
+                    }
                 }
-                MotionEvent.ACTION_MOVE -> {
 
-                }
-                MotionEvent.ACTION_UP -> {
-                    
-                }
-        }
+                return v?.onTouchEvent(event) ?: true
+            }
+        })
 
-        
 
-        binding.SVGAME.holder.addCallback(SurfaceHolder.Callback(){
+        binding.SVGAME.holder.addCallback(object: Callback{
 
-            override fun surfaceDestroyed(holder: SurfaceHolder) 
+            override fun surfaceDestroyed(holder: SurfaceHolder)
             {
 
             }
@@ -82,12 +90,12 @@ class MainActivity : AppCompatActivity() {
 
                     aBoard.Draw(canvas, paint)
 
-                    draw(canvas);
+
                     holder.unlockCanvasAndPost(canvas);
                 }
             }
 
-            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) 
+            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int)
             {
 
             }
