@@ -4,12 +4,14 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
+import android.util.Log
+import androidx.core.graphics.plus
 
 class Piece () {
     var Name = String()
     var Key = String()
 
-    var Pos = PointF(0f, 0f)
+    var Pos = PointF(-1f, -1f)
     var Type = -1
     var Color = -1
 
@@ -31,8 +33,24 @@ class Piece () {
     fun Draw(canvas: Canvas, paint: Paint)
     {
         //TODO: DRAW THE PIECE HERE!
+        if(!IsEmpty() && IsAlive)
+        {
+            val cartesianPos = Board.GridToCartesian(Pos)
+            canvas.drawBitmap(IMG, cartesianPos.x, cartesianPos.y, paint)
+            Log.d("Piece>Draw", "called for piece '" + Name + "' at pos " + cartesianPos.toString())
+        }
 
-        canvas.drawBitmap(IMG, 0f, 0f, paint)
+    }
+
+    fun GetAbsoluteMovementPattern(): ArrayList<PointF>
+    {
+        var absMovementPattern = ArrayList<PointF>()
+        for (pos in MovementPattern)
+        {
+            absMovementPattern.add(Pos.plus(pos))
+        }
+
+        return absMovementPattern
     }
 
     fun IsEmpty(): Boolean
@@ -41,6 +59,11 @@ class Piece () {
             return true
         else
             return false
+    }
+
+    fun SetToEmpty()
+    {
+        Name = "Empty"
     }
 
 

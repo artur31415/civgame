@@ -9,12 +9,9 @@ import android.view.SurfaceHolder
 import android.view.SurfaceHolder.Callback
 import android.view.SurfaceView
 import android.view.View
-import com.sigma.civgame.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
 
     var paint = Paint()
 
@@ -22,35 +19,71 @@ class MainActivity : AppCompatActivity() {
 
     var selectedPiece = Piece.GetEmptyPiece()
 
+    val bitmapW = 1500
+    val bitmapH = 1500
+
+    val bitmap = Bitmap.createBitmap(
+        bitmapW,
+        bitmapH,
+        Bitmap.Config.ARGB_8888
+    )
+
+    fun GetEmptyCanvas(): Canvas
+    {
+        return Canvas(bitmap).apply {
+            drawColor(Color.parseColor("#E9D66B"))
+        }
+    }
+
+    fun Draw()
+    {
+        IV_GAME.setImageBitmap(bitmap)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(R.layout.activity_main)
 
         //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
 
-        var img = BitmapFactory.decodeResource(resources, R.drawable.chess_pieces)
-        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
+        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
+        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
 
-        var aBoard = Board()
+        var aBoard = Board("")
 
         selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
         selectedPiece.IMG = imgPiece1
+        selectedPiece.IsSelected = true
+
+        TV_STATUS.setText("debug1")
 
         
-        paint.textSize = 50f
-        paint.color = Color.WHITE
+//        paint.textSize = 50f
+//        paint.color = Color.WHITE
+
+        val canvas = GetEmptyCanvas()
+
+        paint = Paint().apply {
+            color = Color.parseColor("#545AA7")
+            strokeWidth = 5F
+            style = Paint.Style.STROKE
+            strokeCap = Paint.Cap.SQUARE
+            strokeMiter = 20F
+            textSize = 75f
+        }
+
+        aBoard.Draw(canvas, paint)
 
 
 
-
-//        binding.SVGAME.setOnClickListener {
+        Draw()
 //
+//        IV_GAME.setOnClickListener {
+//            Log.d("OnClickListener", "Clicked")
 //        }
 
 
-        binding.SVGAME.setOnTouchListener { v, event ->
+        IV_GAME.setOnTouchListener { v, event ->
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> {
                     lastTouchDown.x = event.getX();
@@ -58,7 +91,26 @@ class MainActivity : AppCompatActivity() {
 
                     //TODO: CONVERT TO GRID POS!
                     val touchedGrid = Board.CartesianToGrid(lastTouchDown)
-                    Log.d("OnTouchListener>DOWN", lastTouchDown.toString())
+                    var drawFlag = false
+                    if(!aBoard.IsAnyPieceSelected())
+                        drawFlag = aBoard.SelectPieceAt(touchedGrid)
+                    else
+                    {
+                        drawFlag = aBoard.SelectedGridPos(touchedGrid)
+                        if(!drawFlag)
+                        {
+                            aBoard.UnselectPiece()
+                            drawFlag = true
+                        }
+                    }
+
+                    if(drawFlag)
+                    {
+                        aBoard.Draw(GetEmptyCanvas(), paint)
+                        Draw()
+                    }
+
+                    Log.d("OnTouchListener>DOWN", lastTouchDown.toString() + "; " + Board.CartesianToGrid(lastTouchDown))
                 }
                 MotionEvent.ACTION_MOVE -> {
 
@@ -67,62 +119,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-
-            Log.d("OnTouchListener", "tOUCH")
             v?.onTouchEvent(event) ?: true
-        }
-
-
-        binding.SVGAME.holder.addCallback(object: Callback{
-
-            override fun surfaceDestroyed(holder: SurfaceHolder)
-            {
-
-            }
-
-            override fun surfaceCreated(holder: SurfaceHolder) {
-                var canvas = holder.lockCanvas();
-                if (canvas != null) {
-
-                    //TODO: Draw Stuff here
-
-                    aBoard.Draw(canvas, paint)
-
-                    if(!selectedPiece.IsEmpty())
-                    {
-                        var freePositions = aBoard.GetFreePositions(selectedPiece.MovementPattern)
-                        //then draw the positions!
-
-                        aBoard.DrawFreePos(freePositions, canvas, paint)
-                    }
-
-
-                    holder.unlockCanvasAndPost(canvas)
-                    Log.d("DEBUG", "HERE2")
-                }
-                else
-                {
-                    Log.d("DEBUG", "HERE3")
-                }
-            }
-
-            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int)
-            {
-
-            }
-
-        })
-
-
-
-        if (binding.SVGAME.holder.surface.isValid)
-        {
-            var canvas = binding.SVGAME.holder.lockCanvas()
-            binding.SVGAME.holder.unlockCanvasAndPost(canvas)
-        }
-        else
-        {
-            Log.d("DEBUG", "HERE2")
         }
 
     }
