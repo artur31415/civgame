@@ -1,5 +1,8 @@
 package com.sigma.civgame
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.PointF
 
 class Piece () {
@@ -15,7 +18,7 @@ class Piece () {
 
     var MovementPattern = ArrayList<PointF> ()
 
-    var IMG = Bitmap()
+    var IMG = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
     constructor(name: String, type: Int, color: Int) : this() {
         Name = name

@@ -1,6 +1,10 @@
 package com.sigma.civgame
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.PointF
+import kotlin.math.floor
 
 class Board () {
 
@@ -12,16 +16,21 @@ class Board () {
     constructor(InitialPosString: String): this()
     {
         //TODO: setup pieces here
+        Pieces[0].Name = "Rooky"
+        Pieces[0].Type = Piece.TYPE_ROOK
+        Pieces[0].Pos = PointF(1f, 1f)
     }
 
     companion object
     {
-        var GridSize = PointF(8, 8)
+        var GridSize = PointF(8f, 8f)
         var GridLength = 12 //pixels
 
         fun CartesianToGrid(cartesianPos: PointF): PointF {
             var gridPos = PointF()
 
+            gridPos.x = floor(cartesianPos.x / GridLength)
+            gridPos.y = floor(cartesianPos.y / GridLength)
 
             return gridPos
         }
@@ -29,6 +38,8 @@ class Board () {
         fun GridToCartesian(gridPos: PointF): PointF {
             var cartesianPos = PointF()
 
+            cartesianPos.x = gridPos.x * GridLength
+            cartesianPos.y = gridPos.y * GridLength
 
             return cartesianPos
         } 
@@ -37,9 +48,10 @@ class Board () {
     fun Draw(canvas: Canvas, paint: Paint)
     {
         //TODO: DRAW THE BOARD HERE!
+        canvas.drawColor(Color.GREEN)
         for (k in 0..2)
         {
-            var pos = PointF(0f, k * GridLength)
+            var pos = PointF(0f, (k * GridLength).toFloat())
             canvas.drawLine(pos.x, pos.y, pos.x + 100, pos.y, paint)
 
             canvas.drawLine(pos.y, pos.x, pos.y, pos.x + 100, paint)
@@ -65,7 +77,7 @@ class Board () {
         for(gridPosition in gridPositions)
         {
             val cartesianPos = GridToCartesian(gridPosition)
-            canvas.drawCircle(cartesianPos.x, cartesianPos.y, GridLength, paint)
+            canvas.drawCircle(cartesianPos.x, cartesianPos.y, GridLength.toFloat(), paint)
         }
     }
 

@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     var lastTouchDown = PointF()
 
+    var selectedPiece = Piece.GetEmptyPiece()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -28,51 +30,47 @@ class MainActivity : AppCompatActivity() {
 
         //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
 
-        var img = BitmapFactory.decodeResource(resources, R.drawable.hjm_crystal_game_pieces_all)
+        var img = BitmapFactory.decodeResource(resources, R.drawable.chess_pieces)
         var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
 
         var aBoard = Board()
 
-        var selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
+        selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
         selectedPiece.IMG = imgPiece1
 
         
         paint.textSize = 50f
         paint.color = Color.WHITE
 
-        if(!selectedPiece.IsEmpty())
-        {
-            var freePositions = aBoard.GetFreePositions(selectedPiece.MovementPattern)
-            //then draw the positions!
-        }
 
 
-        binding.SVGAME.setOnClickListener {
 
-        }
+//        binding.SVGAME.setOnClickListener {
+//
+//        }
 
 
-        binding.SVGAME.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                when (event?.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        lastTouchDown.x = event.getX();
-                        lastTouchDown.y = event.getY();
+        binding.SVGAME.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastTouchDown.x = event.getX();
+                    lastTouchDown.y = event.getY();
 
-                        //TODO: CONVERT TO GRID POS!
-                        val touchedGrid = Board.CartesianToGrid(lastTouchDown)
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-
-                    }
-                    MotionEvent.ACTION_UP -> {
-
-                    }
+                    //TODO: CONVERT TO GRID POS!
+                    val touchedGrid = Board.CartesianToGrid(lastTouchDown)
+                    Log.d("OnTouchListener>DOWN", lastTouchDown.toString())
                 }
+                MotionEvent.ACTION_MOVE -> {
 
-                return v?.onTouchEvent(event) ?: true
+                }
+                MotionEvent.ACTION_UP -> {
+
+                }
             }
-        })
+
+            Log.d("OnTouchListener", "tOUCH")
+            v?.onTouchEvent(event) ?: true
+        }
 
 
         binding.SVGAME.holder.addCallback(object: Callback{
@@ -90,8 +88,21 @@ class MainActivity : AppCompatActivity() {
 
                     aBoard.Draw(canvas, paint)
 
+                    if(!selectedPiece.IsEmpty())
+                    {
+                        var freePositions = aBoard.GetFreePositions(selectedPiece.MovementPattern)
+                        //then draw the positions!
 
-                    holder.unlockCanvasAndPost(canvas);
+                        aBoard.DrawFreePos(freePositions, canvas, paint)
+                    }
+
+
+                    holder.unlockCanvasAndPost(canvas)
+                    Log.d("DEBUG", "HERE2")
+                }
+                else
+                {
+                    Log.d("DEBUG", "HERE3")
                 }
             }
 
@@ -102,36 +113,12 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+
+
         if (binding.SVGAME.holder.surface.isValid)
         {
             var canvas = binding.SVGAME.holder.lockCanvas()
-            // var img = BitmapFactory.decodeResource(resources, R.drawable.hjm_crystal_game_pieces_all)
-            // var imgPiece1 = Bitmap.createBitmap(img, 0, 0, 50, 50)
-            //img = Bitmap.createScaledBitmap(img, 100, 100, false)
-
-            // var paint = Paint()
-            // paint.textSize = 50f
-            // paint.color = Color.WHITE
-
-
-            // for (k in 0..2)
-            // {
-            //     var pos = PointF(0f, k * 20f)
-            //     canvas.drawLine(pos.x, pos.y, pos.x + 100, pos.y, paint)
-
-            //     canvas.drawLine(pos.y, pos.x, pos.y, pos.x + 100, paint)
-            // }
-
-
-            // canvas.drawBitmap(imgPiece1, 0f, 0f, paint)
-            // canvas.drawText("debug", 50f, 50f, paint)
-
-
-
             binding.SVGAME.holder.unlockCanvasAndPost(canvas)
-
-
-
         }
         else
         {
