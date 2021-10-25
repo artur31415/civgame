@@ -80,5 +80,23 @@ class Piece () {
         {
             return Piece("EMPTY", -1, -1)
         }
+
+        fun GetDefaultRook(position: PointF, img: Bitmap): Piece
+        {
+            var newPiece = GetEmptyPiece()
+
+            newPiece.IsAlive = true
+            newPiece.Name = "Rook"
+            newPiece.Type = Piece.TYPE_ROOK
+            newPiece.Pos = position
+            newPiece.IMG = img
+
+            newPiece.MovementPattern.add(PointF(1f, 0f))
+            newPiece.MovementPattern.add(PointF(-1f, 0f))
+            newPiece.MovementPattern.add(PointF(0f, 1f))
+            newPiece.MovementPattern.add(PointF(0f, -1f))
+
+            return newPiece
+        }
     }
 }
