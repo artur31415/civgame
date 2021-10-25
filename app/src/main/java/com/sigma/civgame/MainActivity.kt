@@ -46,13 +46,13 @@ class MainActivity : AppCompatActivity() {
 
         //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
 
-        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
-        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
+//        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
+//        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
 
-        var aBoard = Board("")
+        var aBoard = Board("", resources)
 
         selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
-        selectedPiece.IMG = imgPiece1
+        //selectedPiece.IMG = imgPiece1
         selectedPiece.IsSelected = true
 
         TV_STATUS.setText("debug1")

@@ -1,9 +1,7 @@
 package com.sigma.civgame
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PointF
+import android.content.res.Resources
+import android.graphics.*
 import android.util.Log
 import androidx.core.graphics.plus
 
@@ -12,7 +10,7 @@ class Piece () {
     var Key = String()
 
     var Pos = PointF(-1f, -1f)
-    var Type = -1
+    var Type: PieceType = PieceType.ROOK
     var Color = -1
 
     var IsAlive = false
@@ -22,7 +20,7 @@ class Piece () {
 
     var IMG = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
-    constructor(name: String, type: Int, color: Int) : this() {
+    constructor(name: String, type: PieceType, color: Int) : this() {
         Name = name
         Key = " " //This should be a random string
         Type = type
@@ -69,27 +67,52 @@ class Piece () {
 
     companion object
     {
-        const val TYPE_ROOK = 0
-
-
         const val COLOR_WHITE = 0
         const val COLOR_BLACK = 1
+
+        enum class PieceType {
+            EMPTY,
+            ROOK,
+            KNIGHT
+        }
 
 
         fun GetEmptyPiece(): Piece
         {
-            return Piece("EMPTY", -1, -1)
+            return Piece("EMPTY", PieceType.EMPTY, -1)
         }
 
-        fun GetDefaultRook(position: PointF, img: Bitmap): Piece
+        fun GetDefaultPiece(position: PointF, type: PieceType, color: Int, resources: Resources, bitmapSize: Point, imgIDW: Int, imgIDB: Int): Piece
         {
             var newPiece = GetEmptyPiece()
 
             newPiece.IsAlive = true
-            newPiece.Name = "Rook"
-            newPiece.Type = Piece.TYPE_ROOK
+            newPiece.Name = type.name
+            newPiece.Type = type
             newPiece.Pos = position
-            newPiece.IMG = img
+            newPiece.Color = color
+
+
+            var imgID = imgIDB
+
+            if (color == Piece.COLOR_WHITE)
+                imgID = imgIDW
+
+            newPiece.IMG = GetPieceImg(resources, imgID, bitmapSize)
+
+
+            return newPiece
+        }
+
+        fun GetPieceImg(resources: Resources, imageID: Int, imageSize: Point): Bitmap
+        {
+            val img = BitmapFactory.decodeResource(resources, imageID)
+            return Bitmap.createBitmap(img, 0, 0, imageSize.x / 8, imageSize.y / 8)
+        }
+
+        fun GetDefaultRook(position: PointF, color: Int, bitmapSize: Point, resources: Resources): Piece
+        {
+            val newPiece = GetDefaultPiece(position, PieceType.ROOK, color, resources, bitmapSize, R.drawable.pawn_w3, R.drawable.pawn_b3)
 
             newPiece.MovementPattern.add(PointF(1f, 0f))
             newPiece.MovementPattern.add(PointF(-1f, 0f))

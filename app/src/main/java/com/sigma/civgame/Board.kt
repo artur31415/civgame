@@ -1,9 +1,7 @@
 package com.sigma.civgame
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PointF
+import android.content.res.Resources
+import android.graphics.*
 import androidx.core.graphics.plus
 import kotlin.math.floor
 
@@ -14,7 +12,7 @@ class Board () {
 
     //board features?
 
-    constructor(InitialPosString: String): this()
+    constructor(InitialPosString: String, resources: Resources): this()
     {
         //TODO: setup pieces here
         for (piece in Pieces)
@@ -22,15 +20,8 @@ class Board () {
             piece.SetToEmpty()
         }
 
-        Pieces[0].IsAlive = true
-        Pieces[0].Name = "Rooky"
-        Pieces[0].Type = Piece.TYPE_ROOK
-        Pieces[0].Pos = PointF(1f, 1f)
+        Pieces[0] = Piece.GetDefaultRook(PointF(1f, 1f), Piece.COLOR_BLACK, Point(WorldW, WorldW), resources)
 
-        Pieces[0].MovementPattern.add(PointF(1f, 0f))
-        Pieces[0].MovementPattern.add(PointF(-1f, 0f))
-        Pieces[0].MovementPattern.add(PointF(0f, 1f))
-        Pieces[0].MovementPattern.add(PointF(0f, -1f))
     }
 
     companion object
