@@ -76,13 +76,29 @@ class Piece () {
             KNIGHT
         }
 
+        val PieceTypeToImageIDW: HashMap<PieceType, Int> = hashMapOf(
+            PieceType.ROOK to R.drawable.pawn_w3,
+            PieceType.KNIGHT to R.drawable.knight_W3
+        )
+
+        val PieceTypeToImageIDB: HashMap<PieceType, Int> = hashMapOf(
+            PieceType.ROOK to R.drawable.pawn_b3,
+            PieceType.KNIGHT to R.drawable.knight_b3
+        )
+
+
+        val PieceTypeToMovementPattern: HashMap<PieceType, ArrayList<PointF>> = hashMapOf(
+            PieceType.ROOK to arrayOf(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f)),
+            PieceType.KNIGHT to arrayOf(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 1f))
+        )
+
 
         fun GetEmptyPiece(): Piece
         {
             return Piece("EMPTY", PieceType.EMPTY, -1)
         }
 
-        fun GetDefaultPiece(position: PointF, type: PieceType, color: Int, resources: Resources, bitmapSize: Point, imgIDW: Int, imgIDB: Int): Piece
+        fun SetPiece(position: PointF, type: PieceType, color: Int, resources: Resources, bitmapSize: Point, imgIDW: Int, imgIDB: Int, movementPattern: ArrayList<PointF>): Piece
         {
             var newPiece = GetEmptyPiece()
 
@@ -100,7 +116,7 @@ class Piece () {
 
             newPiece.IMG = GetPieceImg(resources, imgID, bitmapSize)
 
-
+            newPiece.MovementPattern = movementPattern
             return newPiece
         }
 
@@ -112,14 +128,13 @@ class Piece () {
 
         fun GetDefaultRook(position: PointF, color: Int, bitmapSize: Point, resources: Resources): Piece
         {
-            val newPiece = GetDefaultPiece(position, PieceType.ROOK, color, resources, bitmapSize, R.drawable.pawn_w3, R.drawable.pawn_b3)
-
-            newPiece.MovementPattern.add(PointF(1f, 0f))
-            newPiece.MovementPattern.add(PointF(-1f, 0f))
-            newPiece.MovementPattern.add(PointF(0f, 1f))
-            newPiece.MovementPattern.add(PointF(0f, -1f))
-
-            return newPiece
+            return SetPiece(position, PieceType.ROOK, color, resources, bitmapSize, PieceTypeToImageIDW[PieceType.ROOK], PieceTypeToImageIDB[PieceType.ROOK], Piece.PieceTypeToMovementPattern[PieceType.ROOK])
         }
+
+        fun GetPiece(pieceType: PieceType, position: PointF, color: Int, bitmapSize: Point, resources: Resources): Piece
+        {
+            return SetPiece(position, pieceType, color, resources, bitmapSize, PieceTypeToImageIDW[pieceType], PieceTypeToImageIDB[pieceType], Piece.PieceTypeToMovementPattern[pieceType])
+        }
+
     }
 }

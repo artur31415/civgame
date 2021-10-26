@@ -21,7 +21,7 @@ class Board () {
         }
 
         Pieces[0] = Piece.GetDefaultRook(PointF(1f, 1f), Piece.COLOR_BLACK, Point(WorldW, WorldW), resources)
-
+        Pieces[1] = Piece.GetPiece(PieceType.KNIGHT, PointF(1f, 6f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
     }
 
     companion object
@@ -143,6 +143,7 @@ class Board () {
             {
                 var freePositions = GetFreePositions(piece.GetAbsoluteMovementPattern())
                 //then draw the positions!
+                //TODO: Filter for viable positions
 
                 DrawFreePos(freePositions, canvas, paint)
                 break
