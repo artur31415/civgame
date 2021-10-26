@@ -12,7 +12,7 @@ class Board () {
 
     //board features?
 
-    constructor(InitialPosString: String, resources: Resources): this()
+    constructor(initialPosString: String, resources: Resources): this()
     {
         //TODO: setup pieces here
         for (piece in Pieces)
@@ -20,8 +20,12 @@ class Board () {
             piece.SetToEmpty()
         }
 
-        Pieces[0] = Piece.GetDefaultRook(PointF(1f, 1f), Piece.COLOR_BLACK, Point(WorldW, WorldW), resources)
-        Pieces[1] = Piece.GetPiece(PieceType.KNIGHT, PointF(1f, 6f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[0] = Piece.GetPiece(Piece.PieceType.PAWN, PointF(1f, 1f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[1] = Piece.GetPiece(Piece.PieceType.KNIGHT, PointF(1f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[2] = Piece.GetPiece(Piece.PieceType.BISHOP, PointF(3f, 3f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[3] = Piece.GetPiece(Piece.PieceType.ROOK, PointF(6f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[4] = Piece.GetPiece(Piece.PieceType.QUEEN, PointF(7f, 0f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces[5] = Piece.GetPiece(Piece.PieceType.KING, PointF(4f, 4f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
     }
 
     companion object
@@ -29,6 +33,14 @@ class Board () {
         var GridSize = PointF(8f, 8f)
         var WorldW = 1500
         var GridLength = WorldW / 8 //pixels
+
+        fun StringToBoardState(initialPosString: String): ArrayList<Piece>
+        {
+            var pieces = ArrayList<Piece>()
+
+
+            return pieces
+        }
 
         fun IsCartesianPosWithinRange(cartesianPos: PointF): Boolean
         {

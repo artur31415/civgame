@@ -10,7 +10,7 @@ class Piece () {
     var Key = String()
 
     var Pos = PointF(-1f, -1f)
-    var Type: PieceType = PieceType.ROOK
+    var Type: PieceType = PieceType.PAWN
     var Color = -1
 
     var IsAlive = false
@@ -19,6 +19,16 @@ class Piece () {
     var MovementPattern = ArrayList<PointF> ()
 
     var IMG = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+
+    enum class PieceType {
+        EMPTY,
+        PAWN,
+        KNIGHT,
+        BISHOP,
+        ROOK,
+        KING,
+        QUEEN
+    }
 
     constructor(name: String, type: PieceType, color: Int) : this() {
         Name = name
@@ -70,26 +80,34 @@ class Piece () {
         const val COLOR_WHITE = 0
         const val COLOR_BLACK = 1
 
-        enum class PieceType {
-            EMPTY,
-            ROOK,
-            KNIGHT
-        }
+
 
         val PieceTypeToImageIDW: HashMap<PieceType, Int> = hashMapOf(
-            PieceType.ROOK to R.drawable.pawn_w3,
-            PieceType.KNIGHT to R.drawable.knight_W3
+            PieceType.PAWN to R.drawable.pawn_w3,
+            PieceType.KNIGHT to R.drawable.knight_w3,
+            PieceType.BISHOP to R.drawable.bishop_w3,
+            PieceType.ROOK to R.drawable.rook_w3,
+            PieceType.QUEEN to R.drawable.queen_w3,
+            PieceType.KING to R.drawable.king_w3
         )
 
         val PieceTypeToImageIDB: HashMap<PieceType, Int> = hashMapOf(
-            PieceType.ROOK to R.drawable.pawn_b3,
-            PieceType.KNIGHT to R.drawable.knight_b3
+            PieceType.PAWN to R.drawable.pawn_b3,
+            PieceType.KNIGHT to R.drawable.knight_b3,
+            PieceType.BISHOP to R.drawable.bishop_b3,
+            PieceType.ROOK to R.drawable.rook_b3,
+            PieceType.QUEEN to R.drawable.queen_b3,
+            PieceType.KING to R.drawable.king_b3
         )
 
 
         val PieceTypeToMovementPattern: HashMap<PieceType, ArrayList<PointF>> = hashMapOf(
-            PieceType.ROOK to arrayOf(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f)),
-            PieceType.KNIGHT to arrayOf(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 1f))
+            PieceType.PAWN to arrayListOf<PointF>(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f)),
+            PieceType.KNIGHT to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 1f)),
+            PieceType.BISHOP to arrayListOf<PointF>(PointF(1f, 1f), PointF(-1f, -1f)),
+            PieceType.ROOK to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 0f)),
+            PieceType.QUEEN to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(0f, 1f), PointF(0f, 2f)),
+            PieceType.KING to arrayListOf<PointF>(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f))
         )
 
 
@@ -126,14 +144,9 @@ class Piece () {
             return Bitmap.createBitmap(img, 0, 0, imageSize.x / 8, imageSize.y / 8)
         }
 
-        fun GetDefaultRook(position: PointF, color: Int, bitmapSize: Point, resources: Resources): Piece
-        {
-            return SetPiece(position, PieceType.ROOK, color, resources, bitmapSize, PieceTypeToImageIDW[PieceType.ROOK], PieceTypeToImageIDB[PieceType.ROOK], Piece.PieceTypeToMovementPattern[PieceType.ROOK])
-        }
-
         fun GetPiece(pieceType: PieceType, position: PointF, color: Int, bitmapSize: Point, resources: Resources): Piece
         {
-            return SetPiece(position, pieceType, color, resources, bitmapSize, PieceTypeToImageIDW[pieceType], PieceTypeToImageIDB[pieceType], Piece.PieceTypeToMovementPattern[pieceType])
+            return SetPiece(position, pieceType, color, resources, bitmapSize, PieceTypeToImageIDW[pieceType]!!, PieceTypeToImageIDB[pieceType]!!, Piece.PieceTypeToMovementPattern[pieceType]!!)
         }
 
     }
