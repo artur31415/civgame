@@ -39,7 +39,7 @@ class Piece () {
 
     fun IsSameColorAsAnother(anotherPiece: Piece): Boolean
     {
-        if(color == anotherPiece.color)
+        if(Color == anotherPiece.Color)
             return true
         else
             return false
@@ -87,13 +87,13 @@ class Piece () {
         const val COLOR_WHITE = 0
         const val COLOR_BLACK = 1
 
-        val PieceCharToPieceType: HashMap<String, PieceType> = hashMapOf(
-            "p" to PieceType.PAWN,
-            "n" to PieceType.KNIGHT,
-            "b" to PieceType.BISHOP,
-            "r" to PieceType.ROOK,
-            "q" to PieceType.QUEEN,
-            "k" to PieceType.KING
+        val PieceCharToPieceType: HashMap<Char, PieceType> = hashMapOf(
+            'p' to PieceType.PAWN,
+            'n' to PieceType.KNIGHT,
+            'b' to PieceType.BISHOP,
+            'r' to PieceType.ROOK,
+            'q' to PieceType.QUEEN,
+            'k' to PieceType.KING
         )
 
         val PieceTypeToImageIDW: HashMap<PieceType, Int> = hashMapOf(
@@ -164,9 +164,9 @@ class Piece () {
             return SetPiece(position, pieceType, color, resources, bitmapSize, PieceTypeToImageIDW[pieceType]!!, PieceTypeToImageIDB[pieceType]!!, Piece.PieceTypeToMovementPattern[pieceType]!!)
         }
 
-        fun GetPieceByChar(pieceChar: String, position: PointF, bitmapSize: Point, resources: Resources): Piece
+        fun GetPieceByChar(pieceChar: Char, position: PointF, bitmapSize: Point, resources: Resources): Piece
         {
-            var pieceType = PieceCharToPieceType[pieceChar.toLowerCase()]
+            var pieceType = PieceCharToPieceType[pieceChar.lowercaseChar()]!!
             var pieceColor = Piece.COLOR_WHITE
 
             if(pieceChar.isLowerCase())

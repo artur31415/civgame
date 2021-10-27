@@ -7,7 +7,7 @@ import kotlin.math.floor
 
 class Board () {
 
-    var Pieces = Array(32) { Piece.GetEmptyPiece() }
+    var Pieces = ArrayList<Piece>()
     
 
     //board features?
@@ -55,7 +55,7 @@ class Board () {
                     var rankCounter = 0
                     for(pieceChar in lineStr)
                     {
-                        var newPiece = Piece.GetPieceByChar(pieceChar, PointF(lineCounter, rankCounter), Point(WorldW, WorldW), resources)
+                        var newPiece = Piece.GetPieceByChar(pieceChar, PointF(rankCounter.toFloat(), lineCounter.toFloat()), Point(WorldW, WorldW), resources)
 
                         pieces.add(newPiece)
                         rankCounter++
