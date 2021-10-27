@@ -20,12 +20,16 @@ class Board () {
             piece.SetToEmpty()
         }
 
-        Pieces[0] = Piece.GetPiece(Piece.PieceType.PAWN, PointF(1f, 1f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
-        Pieces[1] = Piece.GetPiece(Piece.PieceType.KNIGHT, PointF(1f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
-        Pieces[2] = Piece.GetPiece(Piece.PieceType.BISHOP, PointF(3f, 3f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
-        Pieces[3] = Piece.GetPiece(Piece.PieceType.ROOK, PointF(6f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
-        Pieces[4] = Piece.GetPiece(Piece.PieceType.QUEEN, PointF(7f, 0f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
-        Pieces[5] = Piece.GetPiece(Piece.PieceType.KING, PointF(4f, 4f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        Pieces = StringToBoardState(initialPosString, resources)
+
+        // Pieces[0] = Piece.GetPiece(Piece.PieceType.PAWN, PointF(1f, 1f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        // Pieces[1] = Piece.GetPiece(Piece.PieceType.KNIGHT, PointF(1f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        // Pieces[2] = Piece.GetPiece(Piece.PieceType.BISHOP, PointF(3f, 3f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        // Pieces[3] = Piece.GetPiece(Piece.PieceType.ROOK, PointF(6f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        // Pieces[4] = Piece.GetPiece(Piece.PieceType.QUEEN, PointF(7f, 0f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+        // Pieces[5] = Piece.GetPiece(Piece.PieceType.KING, PointF(4f, 4f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
+
+
     }
 
     companion object
@@ -34,10 +38,32 @@ class Board () {
         var WorldW = 1500
         var GridLength = WorldW / 8 //pixels
 
-        fun StringToBoardState(initialPosString: String): ArrayList<Piece>
+        //Forsyth–Edwards_Notation Parser
+        fun StringToBoardState(initialPosString: String, resources: Resources): ArrayList<Piece>
         {
             var pieces = ArrayList<Piece>()
+            //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+            var elementsStr = initialPosString.split(" ")
+            var boardStateStr = elementsStr[0].split("/")
 
+
+            var lineCounter = 0
+            for(lineStr in boardStateStr)
+            {
+                if(lineStr != "8")
+                {
+                    var rankCounter = 0
+                    for(pieceChar in lineStr)
+                    {
+                        var newPiece = Piece.GetPieceByChar(pieceChar, PointF(lineCounter, rankCounter), Point(WorldW, WorldW), resources)
+
+                        pieces.add(newPiece)
+                        rankCounter++
+                    }
+                }
+
+                lineCounter++
+            }
 
             return pieces
         }
@@ -113,9 +139,33 @@ class Board () {
             {
                 if(piece.GetAbsoluteMovementPattern().contains(gridPos))
                 {
-                    piece.Pos = gridPos
-                    piece.IsSelected = false
-                    return true
+                    //TODO: PIECE CAPTURING HERE!
+
+                    var isPosFree = true
+
+                    for(anotherPiece in Pieces)
+                    {
+                        if(anotherPiece.IsAlive && anotherPiece.Pos.equals(gridPos))
+                        {
+                            if(!anotherPiece.IsSameColorAsAnother(piece))
+                            {
+                                anotherPiece.IsAlive = false
+                            }
+                            else
+                                isPosFree = false
+
+                            break
+                        }
+                    }
+
+                    if(isPosFree)
+                    {
+                        piece.Pos = gridPos
+                        piece.IsSelected = false
+                        return true
+                    }
+                    else
+                        return false
                 }
                 break
             }

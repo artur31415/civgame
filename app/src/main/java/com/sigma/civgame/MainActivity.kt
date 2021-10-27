@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 //        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
 //        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
 
-        var aBoard = Board("", resources)
+        var aBoard = Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", resources)
 
         selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
         //selectedPiece.IMG = imgPiece1
