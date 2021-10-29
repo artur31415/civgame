@@ -216,12 +216,20 @@ class Board () {
 
     fun DrawFreePos(gridPositions: ArrayList<PointF>, canvas: Canvas, paint: Paint)
     {
+        val currentStyle = paint.style
+        paint.setStyle(Paint.Style.FILL);
+
         for(gridPosition in gridPositions)
         {
-            val cartesianPos = GridToCartesian(gridPosition).plus(PointF(GridLength.toFloat() / 2, GridLength.toFloat() / 2))
+            //val cartesianPos = GridToCartesian(gridPosition).plus(PointF(GridLength.toFloat() / 2, GridLength.toFloat() / 2))
             if(IsCartesianPosWithinRange(cartesianPos))
-                canvas.drawCircle(cartesianPos.x, cartesianPos.y, GridLength.toFloat() / 4, paint)
+            {
+                canvas.drawRect(gridPosition.x, gridPosition.y, GridLength.toFloat(), GridLength.toFloat(), paint)
+                //canvas.drawCircle(cartesianPos.x, cartesianPos.y, GridLength.toFloat() / 4, paint)   
+            }
         }
+
+        paint.setStyle(currentStyle);
     }
 
     fun GetPieceByPos(position: PointF): Piece
