@@ -216,8 +216,9 @@ class Board () {
 
     fun DrawFreePos(gridPositions: ArrayList<PointF>, canvas: Canvas, paint: Paint)
     {
-        val currentStyle = paint.style
-        paint.setStyle(Paint.Style.FILL);
+        val paintFill = paint
+        paintFill.setStyle(Paint.Style.FILL);
+        paintFill.color = Color.RED
 
         for(gridPosition in gridPositions)
         {
@@ -228,8 +229,6 @@ class Board () {
                 //canvas.drawCircle(cartesianPos.x, cartesianPos.y, GridLength.toFloat() / 4, paint)   
             }
         }
-
-        paint.setStyle(currentStyle);
     }
 
     fun GetPieceByPos(position: PointF): Piece

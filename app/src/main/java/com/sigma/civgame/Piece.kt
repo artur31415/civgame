@@ -117,12 +117,32 @@ class Piece () {
 
         //FIXME: SET THE MOTION ACCORDING TO THE RULES
         val PieceTypeToMovementPattern: HashMap<PieceType, ArrayList<PointF>> = hashMapOf(
-            PieceType.PAWN to arrayListOf<PointF>(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f)),
-            PieceType.KNIGHT to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 1f)),
-            PieceType.BISHOP to arrayListOf<PointF>(PointF(1f, 1f), PointF(-1f, -1f)),
-            PieceType.ROOK to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 0f)),
-            PieceType.QUEEN to arrayListOf<PointF>(PointF(1f, 0f), PointF(2f, 0f), PointF(0f, 1f), PointF(0f, 2f)),
-            PieceType.KING to arrayListOf<PointF>(PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f))
+            PieceType.PAWN to arrayListOf<PointF>(PointF(0f, 1f)),
+            PieceType.KNIGHT to arrayListOf<PointF>(
+                PointF(-1f, 2f),
+                PointF(-1f, -2f),
+                PointF(-2f, -1f),
+                
+                PointF(1f, 2f),
+                PointF(1f, 2f),
+                PointF(2f, 1f)
+                ),
+            PieceType.BISHOP to arrayListOf<PointF>(
+                PointF(1f, 1f), PointF(2f, 2f), PointF(3f, 3f), 
+                PointF(-1f, -1f), PointF(-2f, -2f), PointF(-3f, -3f)
+                ),
+            PieceType.ROOK to arrayListOf<PointF>(
+                PointF(1f, 0f), PointF(2f, 0f), PointF(3f, 0f),
+                PointF(-1f, 0f), PointF(-2f, 0f), PointF(-3f, 0f),
+                PointF(0f, 1f), PointF(0f, 2f), PointF(0f, 3f),
+                PointF(0f, -1f), PointF(0f, -2f), PointF(0f, -3f)
+                ),
+            PieceType.QUEEN to arrayListOf<PointF>(
+                PointF(1f, 0f), PointF(2f, 0f), PointF(0f, 1f), PointF(0f, 2f)
+                ),
+            PieceType.KING to arrayListOf<PointF>(
+                PointF(1f, 0f), PointF(-1f, 0f), PointF(0f, 1f), PointF(0f, -1f)
+                )
         )
 
 
