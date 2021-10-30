@@ -15,12 +15,13 @@ class Board () {
     constructor(initialPosString: String, resources: Resources): this()
     {
         //TODO: setup pieces here
-        for (piece in Pieces)
-        {
-            piece.SetToEmpty()
-        }
+//        for (piece in Pieces)
+//        {
+//            piece.SetToEmpty()
+//        }
 
-        Pieces = StringToBoardState(initialPosString, resources)
+        if(initialPosString.length > 0)
+            Pieces = StringToBoardState(initialPosString, resources)
 
         // Pieces[0] = Piece.GetPiece(Piece.PieceType.PAWN, PointF(1f, 1f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
         // Pieces[1] = Piece.GetPiece(Piece.PieceType.KNIGHT, PointF(1f, 5f), Piece.COLOR_WHITE, Point(WorldW, WorldW), resources)
@@ -92,6 +93,11 @@ class Board () {
 
             return cartesianPos
         } 
+    }
+
+    fun SetBoardStateFromString(initialPosString: String, resources: Resources)
+    {
+        Pieces = StringToBoardState(initialPosString, resources)
     }
 
     fun SelectPieceAt(gridPos: PointF): Boolean
@@ -206,6 +212,7 @@ class Board () {
                 var freePositions = GetFreePositions(piece.GetAbsoluteMovementPattern())
                 //then draw the positions!
                 //TODO: Filter for viable positions
+                //FIXME: FILTER FOR THE CHECK SITUATION!
 
                 DrawFreePos(freePositions, canvas, paint)
                 break
@@ -222,7 +229,7 @@ class Board () {
 
         for(gridPosition in gridPositions)
         {
-            //val cartesianPos = GridToCartesian(gridPosition).plus(PointF(GridLength.toFloat() / 2, GridLength.toFloat() / 2))
+            val cartesianPos = GridToCartesian(gridPosition).plus(PointF(GridLength.toFloat() / 2, GridLength.toFloat() / 2))
             if(IsCartesianPosWithinRange(cartesianPos))
             {
                 canvas.drawRect(gridPosition.x, gridPosition.y, GridLength.toFloat(), GridLength.toFloat(), paint)

@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         Bitmap.Config.ARGB_8888
     )
 
+    val InitBoardStateString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+    val aBoard = Board(InitBoardStateString, resources)
+
     fun GetEmptyCanvas(): Canvas
     {
         return Canvas(bitmap).apply {
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     fun Draw()
     {
+        aBoard.Draw(GetEmptyCanvas(), paint)
         IV_GAME.setImageBitmap(bitmap)
     }
 
@@ -49,14 +54,13 @@ class MainActivity : AppCompatActivity() {
 //        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
 //        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
 
-        var aBoard = Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", resources)
-
         selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
         //selectedPiece.IMG = imgPiece1
         selectedPiece.IsSelected = true
 
-        TV_STATUS.setText("debug1")
-
+        BT_RESET.setOnClickListener {
+            aBoard.SetBoardStateFromString(InitBoardStateString, resources)
+        }
         
 //        paint.textSize = 50f
 //        paint.color = Color.WHITE
@@ -71,10 +75,6 @@ class MainActivity : AppCompatActivity() {
             strokeMiter = 20F
             textSize = 75f
         }
-
-        aBoard.Draw(canvas, paint)
-
-
 
         Draw()
 //
@@ -106,7 +106,6 @@ class MainActivity : AppCompatActivity() {
 
                     if(drawFlag)
                     {
-                        aBoard.Draw(GetEmptyCanvas(), paint)
                         Draw()
                     }
 
