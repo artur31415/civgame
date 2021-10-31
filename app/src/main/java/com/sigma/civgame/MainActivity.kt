@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     val aBoard = Board(InitBoardStateString, resources)
 
+    var CurrentPlayerColor = Piece.COLOR_WHITE
+
     fun GetEmptyCanvas(): Canvas
     {
         return Canvas(bitmap).apply {
@@ -43,29 +45,23 @@ class MainActivity : AppCompatActivity() {
     {
         aBoard.Draw(GetEmptyCanvas(), paint)
         IV_GAME.setImageBitmap(bitmap)
+
+        TV_PLAYER_TURN.text = "PLAYER TURN: " + (if (CurrentPlayerColor == Piece.COLOR_BLACK) "BLACK" else "WHITE")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //var aPiece = Piece("K", Piece.TYPE_ROOK, Piece.COLOR_BLACK)
-
-//        var img = BitmapFactory.decodeResource(resources, R.drawable.pawn_b3)
-//        var imgPiece1 = Bitmap.createBitmap(img, 0, 0, bitmapW / 8, bitmapH / 8)
+        //TODO: PLAYERS ROUND SCHEME!
+        //TODO> PROMOTION!
 
         selectedPiece = aBoard.GetPieceByPos(PointF(1f, 1f))
-        //selectedPiece.IMG = imgPiece1
         selectedPiece.IsSelected = true
 
         BT_RESET.setOnClickListener {
             aBoard.SetBoardStateFromString(InitBoardStateString, resources)
         }
-        
-//        paint.textSize = 50f
-//        paint.color = Color.WHITE
-
-        val canvas = GetEmptyCanvas()
 
         paint = Paint().apply {
             color = Color.parseColor("#545AA7")
@@ -77,11 +73,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Draw()
-//
-//        IV_GAME.setOnClickListener {
-//            Log.d("OnClickListener", "Clicked")
-//        }
-
 
         IV_GAME.setOnTouchListener { v, event ->
             when (event?.action) {
@@ -93,13 +84,14 @@ class MainActivity : AppCompatActivity() {
                     val touchedGrid = Board.CartesianToGrid(lastTouchDown)
                     var drawFlag = false
                     if(!aBoard.IsAnyPieceSelected())
-                        drawFlag = aBoard.SelectPieceAt(touchedGrid)
+                        drawFlag = aBoard.SelectPieceAt(touchedGrid, CurrentPlayerColor)
                     else
                     {
                         drawFlag = aBoard.SelectedGridPos(touchedGrid)
                         if(!drawFlag)
                         {
                             aBoard.UnselectPiece()
+                            CurrentPlayerColor = Piece.ToggleColor(CurrentPlayerColor)
                             drawFlag = true
                         }
                     }

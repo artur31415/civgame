@@ -40,6 +40,7 @@ class Board () {
         var GridLength = WorldW / 8 //pixels
 
         //Forsyth–Edwards_Notation Parser
+        //FIXME: THIS PARSER IS NOT COMPLETE!
         fun StringToBoardState(initialPosString: String, resources: Resources): ArrayList<Piece>
         {
             var pieces = ArrayList<Piece>()
@@ -100,11 +101,11 @@ class Board () {
         Pieces = StringToBoardState(initialPosString, resources)
     }
 
-    fun SelectPieceAt(gridPos: PointF): Boolean
+    fun SelectPieceAt(gridPos: PointF, colorToSelect: Int): Boolean
     {
         for(piece in Pieces)
         {
-            if(piece.IsAlive && !piece.IsSelected && piece.Pos.equals(gridPos))
+            if(piece.IsAlive && !piece.IsSelected && piece.Pos.equals(gridPos) && (colorToSelect == -1 || piece.Color == colorToSelect))
             {
                 piece.IsSelected = true
                 return true
@@ -211,7 +212,6 @@ class Board () {
             {
                 var freePositions = GetFreePositions(piece.GetAbsoluteMovementPattern())
                 //then draw the positions!
-                //TODO: Filter for viable positions
                 //FIXME: FILTER FOR THE CHECK SITUATION!
 
                 DrawFreePos(freePositions, canvas, paint)

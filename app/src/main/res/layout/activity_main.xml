@@ -14,8 +14,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TV_PLAYER_TURN"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="PLAYER TURN: WHITE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="10px"
-            android:layout_weight="10"
+            android:layout_weight="8"
             android:gravity="center"
             android:orientation="horizontal">
 

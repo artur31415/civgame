@@ -145,6 +145,13 @@ class Piece () {
                 )
         )
 
+        fun ToggleColor(anotherColor: Int): Int
+        {
+            if (anotherColor == COLOR_BLACK)
+                return COLOR_WHITE
+            else
+                return COLOR_BLACK
+        }
 
         fun GetEmptyPiece(): Piece
         {
